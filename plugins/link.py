@@ -30,14 +30,14 @@ class Link(dotbot.Plugin):
             force = defaults.get('force', False)
             relink = defaults.get('relink', False)
             create = defaults.get('create', False)
-            use_glob = defaults.get('use_glob', False)
+            use_glob = defaults.get('glob', False)
             if isinstance(source, dict):
                 # extended config
                 relative = source.get('relative', relative)
                 force = source.get('force', force)
                 relink = source.get('relink', relink)
                 create = source.get('create', create)
-                use_glob = source.get('use_glob', use_glob)
+                use_glob = source.get('glob', use_glob)
                 path = self._default_source(destination, source.get('path'))
             else:
                 path = self._default_source(destination, source)
@@ -69,7 +69,7 @@ class Link(dotbot.Plugin):
                     glob_base = path[:glob_star_loc]
                     for glob_full_item in glob_results:
                         glob_item = glob_full_item[len(glob_base):]
-                        glob_link_destination = destination + glob_item
+                        glob_link_destination = os.path.join(destination, glob_item)
                         if create:
                             success &= self._create(glob_link_destination)
                         if force or relink:
